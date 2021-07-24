@@ -1,0 +1,15 @@
+
+[singapore]
+cvm.singapore.sengkang
+cvm.singapore.amk
+
+[taiwan]
+cvm.taiwan.taipei
+
+ubuntu
+
+[all]
+cvm.singapore.sengkang
+cvm.singapore.amk
+cvm.taiwan.taipei
+
