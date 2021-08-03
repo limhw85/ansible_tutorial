@@ -1,7 +1,9 @@
 
-[singapore]
-cvm.singapore.sengkang
+[db_server]
+#cvm.singapore.sengkang apache_package=httpd php_package=php
+cvm.singapore.sengkang 
 
-
+[web_server]
+#ubuntu apache_package=apache2 php_package=libapache2-mod-php
 ubuntu
 
