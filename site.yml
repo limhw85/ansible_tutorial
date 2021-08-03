@@ -17,7 +17,7 @@
 #      update_cache: yes
 #    when: ansible_distribution == "Ubuntu"
 
-- hosts: web_servers
+- hosts: cvm.singapore.sengkang
   become: true
   tasks: 
 
@@ -30,6 +30,24 @@
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+
+  - name: change email address for admin
+    tags: apache,http,centOS
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin somebody@somewhere.net
+    when: ansible_distribution == "CentOS"
+    register: httpd
+
+  
+  - name: restart httpd (CentOS)
+    tags: apache,httpd,centOS
+    service: 
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
 
   - name:  copy default html file
     tags: apache,apache2,httpd
@@ -50,20 +68,28 @@
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
-- hosts: ubuntu
-  become: true
-  tasks:
+  - name: start httpd (CentOS)
+    tags: apache,centOS,httpd
+    service: 
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
+#- hosts: ubuntu
+#  become: true
+#  tasks:
   
-  - name: install unzip
-    package:
-      name: unzip
+#  - name: install unzip
+#    package:
+#      name: unzip
     
-  - name: install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: yes
-      mode: 0755
-      owner: root
-      group: root
+#  - name: install terraform
+#    unarchive:
+#      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+#      dest: /usr/local/bin
+#      remote_src: yes
+#      mode: 0755
+#      owner: root
+#      group: root
   
