@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS" 
+
+  - name: install updates (Ubuntu)
+    tags: always 
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks: 
+
+  - name: install apache and php for ubuntu servers
+    tags: apache,apache2,ubuntu
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache and php for centOS servers
+    tags: apache,centOS,httpd
+    yum:
+      name: 
+        - httpd
+        - php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: db_server
+  become: true
+  tasks:
+  
+  
