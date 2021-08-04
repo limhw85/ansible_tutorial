@@ -1,5 +1,16 @@
-- name: add ssh key for ed
-  tags: always
-  authorized_key:
-    user: ed
-    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCZ/SNdSqoJdTFsuw1pl7bfw0yT3DRCseEa+ksTDeDTHjGovqNkPnTEKI1Vik0CtOte4oRghrOiCupku9jUH9kGw+vaCAfdp0F+UqvHaZlAZw1212XqzOCzDmhtZoLjBpQcgJZ9VsxGvzrxsJMy+MIg9U5FmMGIktRurkoOaAwn2Vh6+cWz9+vDWSfGvaVvCofmRQwX5jxUusZ0szFDkhjoi5nbIx56sxrAznsYtSsp3/H5pfvtimiodviDILO7NB1dqLgUAkpqe/drbBBL+G/0HbXTeYX/XOzlCCFikVQyFtvBa/4P8/pijyQPO2kcmKAyww0CTj5ZLtrRlZXiw/2nNfE/1QhjxFQ0dQrUOhWlR/pJh3MsUvPB8bBaARISneLDR42JtXGMwoB/djswWXb9Twl1VfkTw1g+ql2JtNPA4JOOnd6ANymhu7loxlsuTYhNW3pnPafE3rPjGVrMFKjXZ1lo4V/YB3LTI6zx5541Dst6I3968DjaxtsegSom1Zs= root@ansible.server"
+#- name: add ssh key for ed
+#  tags: always
+#  authorized_key:
+#    user: ed
+#    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCZ/SNdSqoJdTFsuw1pl7bfw0yT3DRCseEa+ksTDeDTHjGovqNkPnTEKI1Vik0CtOte4oRghrOiCupku9jUH9kGw+vaCAfdp0F+UqvHaZlAZw1212XqzOCzDmhtZoLjBpQcgJZ9VsxGvzrxsJMy+MIg9U5FmMGIktRurkoOaAwn2Vh6+cWz9+vDWSfGvaVvCofmRQwX5jxUusZ0szFDkhjoi5nbIx56sxrAznsYtSsp3/H5pfvtimiodviDILO7NB1dqLgUAkpqe/drbBBL+G/0HbXTeYX/XOzlCCFikVQyFtvBa/4P8/pijyQPO2kcmKAyww0CTj5ZLtrRlZXiw/2nNfE/1QhjxFQ0dQrUOhWlR/pJh3MsUvPB8bBaARISneLDR42JtXGMwoB/djswWXb9Twl1VfkTw1g+ql2JtNPA4JOOnd6ANymhu7loxlsuTYhNW3pnPafE3rPjGVrMFKjXZ1lo4V/YB3LTI6zx5541Dst6I3968DjaxtsegSom1Zs= root@ansible.server"
+
+
+- name: generate sshd_config file from template
+  tags: ssh
+  template:
+    src: "{{ ssh_template_file }}"
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_sshd
